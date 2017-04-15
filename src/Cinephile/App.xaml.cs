@@ -8,7 +8,9 @@ namespace Cinephile
         {
             InitializeComponent();
 
-            MainPage = new CinephilePage();
+            var bootstrapper = new AppBootstrapper();
+            MainPage = bootstrapper.CreateMainPage();
+
         }
 
         protected override void OnStart()
