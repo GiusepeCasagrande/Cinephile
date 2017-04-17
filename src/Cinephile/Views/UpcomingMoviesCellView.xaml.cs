@@ -1,15 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Disposables;
 using Cinephile.ViewModels;
+using ReactiveUI;
+using ReactiveUI.XamForms;
 using Xamarin.Forms;
 
 namespace Cinephile.Views
 {
-    public partial class UpcomingMoviesCellView : ContentPageBase<UpcomingMoviesCellViewModel>
+    public partial class UpcomingMoviesCellView : ReactiveViewCell<UpcomingMoviesCellViewModel>
     {
+        protected readonly CompositeDisposable SubscriptionDisposables = new CompositeDisposable();
+
         public UpcomingMoviesCellView()
         {
             InitializeComponent();
+
+            this.WhenActivated(disposables =>
+            {
+                this.OneWayBind(ViewModel, x => x.Title, x => x.Title.Text).DisposeWith(SubscriptionDisposables);
+                this.OneWayBind(ViewModel, x => x.PosterPath, x => x.Poster.Source, x => x).DisposeWith(SubscriptionDisposables);
+            });
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            SubscriptionDisposables.Clear();
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using Akavache;
+using FFImageLoading.Forms.Touch;
 using Foundation;
 using UIKit;
 
@@ -16,7 +17,16 @@ namespace Cinephile.iOS
 
             LoadApplication(new App());
 
+            BlobCache.ApplicationName = "Cinephile";
+            CachedImageRenderer.Init();
+
             return base.FinishedLaunching(app, options);
+        }
+
+        public override void WillTerminate(UIApplication uiApplication)
+        {
+            BlobCache.Shutdown();
+            base.WillTerminate(uiApplication);
         }
     }
 }

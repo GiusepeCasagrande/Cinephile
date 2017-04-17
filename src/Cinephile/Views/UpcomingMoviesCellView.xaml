@@ -1,11 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<ui:ContentPageBase x:Class="Cinephile.Views.UpcomingMoviesCellView"
-             xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
-             xmlns:ui="clr-namespace:Cinephile.Views"
-             xmlns:vms="clr-namespace:Cinephile.ViewModels"
-             x:TypeArguments="vms:UpcomingMoviesCellViewModel">
+<rxui:ReactiveViewCell x:Class="Cinephile.Views.UpcomingMoviesCellView"
+                       xmlns="http://xamarin.com/schemas/2014/forms"
+                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                       xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                       xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+                       xmlns:ui="clr-namespace:Cinephile.Views"
+                       xmlns:vms="clr-namespace:Cinephile.ViewModels"
+                       x:TypeArguments="vms:UpcomingMoviesCellViewModel">
 
+    <Grid HeightRequest="100">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*" />
+            <ColumnDefinition Width="0.7*" />
+        </Grid.ColumnDefinitions>
+        <ffimageloading:CachedImage x:Name="Poster"
+                                    Margin="10"
+                                    VerticalOptions="FillAndExpand"
+                                    Aspect="AspectFill"
+                                    AutomationId="DocumentView_Thumbnail"
+                                    BitmapOptimizations="true"
+                                    DownsampleUseDipUnits="true" />
 
-</ui:ContentPageBase>
+        <StackLayout Grid.Row="0" Grid.Column="1">
+            <Label x:Name="Title" />
+        </StackLayout>
+    </Grid>
+</rxui:ReactiveViewCell>

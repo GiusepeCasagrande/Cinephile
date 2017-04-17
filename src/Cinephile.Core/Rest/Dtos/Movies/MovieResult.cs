@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
-namespace Cinephile.Core.Domain
+namespace Cinephile.Core.Rest.Dtos.Movies
 {
-    public class Movie
+    public class MovieResult
     {
+        [JsonProperty("poster_path")]
         public string PosterPath { get; set; }
         public bool Adult { get; set; }
         public string Overview { get; set; }
@@ -19,9 +21,5 @@ namespace Cinephile.Core.Domain
         public int VoteCount { get; set; }
         public bool Video { get; set; }
         public double VoteAverage { get; set; }
-
-        public Movie()
-        {
-        }
     }
 }

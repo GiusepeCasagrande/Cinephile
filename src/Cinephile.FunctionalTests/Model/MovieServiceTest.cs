@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cinephile.Core.Domain;
+using System.Reactive.Linq;
+using System.Threading;
+using Cinephile.Core.Model;
+using Cinephile.Core.Rest;
+using Microsoft.Reactive.Testing;
 using NUnit.Framework;
+using System.Reactive.Concurrency;
 
-namespace Cinephile.UnitTests.Domain
+
+namespace Cinephile.FunctionalTests.Model
 {
     [TestFixture]
     public class MovieServiceTest
@@ -14,17 +20,23 @@ namespace Cinephile.UnitTests.Domain
         [SetUp]
         public void Setup()
         {
-            sut = new MovieService();
+            sut = new MovieService(new ApiService(), new Cache());
         }
 
         [Test]
         public void GetUpcomingMovies_NoParam_10Movies()
         {
             IEnumerable<Movie> actual = null;
+            var scheduler = new TestScheduler();
 
             sut
                 .GetUpcomingMovies()
-                .Subscribe(movies => actual = movies);
+                .ObserveOn(scheduler)
+                .SubscribeOn(scheduler)
+                .Select(movies => actual = movies)
+                .Subscribe();
+
+            scheduler.AdvanceBy(1);
 
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Count(), Is.EqualTo(10));

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Cinephile.Core.Domain
+namespace Cinephile.Core.Model
 {
     public interface IMovieService
     {
