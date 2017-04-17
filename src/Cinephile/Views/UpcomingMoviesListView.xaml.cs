@@ -27,6 +27,7 @@ namespace Cinephile.Views
                 .DisposeWith(disposables);
                 
                 this.OneWayBind(ViewModel, x => x.IsRefreshing, x => x.UpcomingMoviesList.IsRefreshing).DisposeWith(disposables);
+                this.Bind(ViewModel, x => x.SelectedItem, x => x.UpcomingMoviesList.SelectedItem).DisposeWith(disposables);
 
                 Observable.Return(Unit.Default).InvokeCommand(ViewModel.LoadMovies);
             });

@@ -19,6 +19,7 @@ namespace Cinephile
             Locator.CurrentMutable.RegisterConstant(this, typeof(IScreen));
             Locator.CurrentMutable.Register(() => new UpcomingMoviesListView(), typeof(IViewFor<UpcomingMoviesListViewModel>));
             Locator.CurrentMutable.Register(() => new UpcomingMoviesCellView(), typeof(IViewFor<UpcomingMoviesCellViewModel>));
+            Locator.CurrentMutable.Register(() => new MovieDetailView(), typeof(IViewFor<MovieDetailViewModel>));
 
             Locator.CurrentMutable.Register(() => new Cache(), typeof(ICache));
             Locator.CurrentMutable.Register(() => new ApiService(), typeof(IApiService));

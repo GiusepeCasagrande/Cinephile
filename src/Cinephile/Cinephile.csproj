@@ -35,6 +35,9 @@
     <EmbeddedResource Include="Views\UpcomingMoviesCellView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\MovieDetailView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -54,6 +57,9 @@
     <Compile Include="Views\ContentPageBase.cs" />
     <Compile Include="ViewModels\MovieDetailViewModel.cs" />
     <Compile Include="Utils\ObservableReactiveList.cs" />
+    <Compile Include="Views\MovieDetailView.xaml.cs">
+      <DependentUpon>MovieDetailView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Reactive.Interfaces">

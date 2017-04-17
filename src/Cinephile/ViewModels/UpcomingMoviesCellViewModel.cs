@@ -7,6 +7,14 @@ namespace Cinephile.ViewModels
 {
     public class UpcomingMoviesCellViewModel : ViewModelBase
     {
+        public Movie Movie
+        {
+            get
+            {
+                return this.movie;
+            }
+        }
+
         public string Title
         {
             get

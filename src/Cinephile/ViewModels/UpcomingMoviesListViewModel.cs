@@ -55,6 +55,8 @@ namespace Cinephile.ViewModels
 
             this.WhenActivated((CompositeDisposable disposables) =>
             {
+                SelectedItem = null;
+
                 LoadMovies
                     .Where(movies => movies != null)
                     .Select(movies => movies.Select(movie => new UpcomingMoviesCellViewModel(movie)))
@@ -89,7 +91,11 @@ namespace Cinephile.ViewModels
 
         void LoadSelectedPage(UpcomingMoviesCellViewModel viewModel)
         {
-            HostScreen.Router.Navigate.Execute(new MovieDetailViewModel(viewModel));
+            HostScreen
+                .Router
+                .Navigate
+                .Execute(new MovieDetailViewModel(viewModel.Movie))
+                .Subscribe();
         }
     }
 }
