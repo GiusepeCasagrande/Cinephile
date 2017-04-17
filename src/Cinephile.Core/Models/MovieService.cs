@@ -62,7 +62,8 @@ namespace Cinephile.Core.Model
                                        SmallPosterSize,
                                        movieDto.PosterPath),
                 Genres = genres.Genres.Where(g => movieDto.GenreIds.Contains(g.Id)).Select(j => j.Name).ToList(),
-                ReleaseDate = DateTime.Parse(movieDto.ReleaseDate, new CultureInfo("en-US"))
+                ReleaseDate = DateTime.Parse(movieDto.ReleaseDate, new CultureInfo("en-US")),
+                Overview = movieDto.Overview
             };
         }
     }
