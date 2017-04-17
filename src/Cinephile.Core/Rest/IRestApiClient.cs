@@ -13,5 +13,8 @@ namespace Cinephile.Core.Rest
 
         [Get("/configuration?api_key={apiKey}")]
         IObservable<ImageConfigurationDto> FetchImageConfiguration(string apiKey);
-    }
+
+        [Get("/genre/movie/list?api_key={apiKey}&language={language}")]
+        IObservable<GenresDto> FetchGenres(string apiKey, string language = "en-US");
+   }
 }

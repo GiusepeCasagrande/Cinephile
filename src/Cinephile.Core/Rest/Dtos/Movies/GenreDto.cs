@@ -1,7 +1,7 @@
 ﻿using System;
-namespace Cinephile.Core.Models
+namespace Cinephile.Core.Rest.Dtos.Movies
 {
-    public class Gender
+    public class GenreDto
     {
         public int Id
         {
@@ -11,11 +11,10 @@ namespace Cinephile.Core.Models
 
         public string Name
         {
-            get;
-            set;
+            get; set;
         }
 
-        public Gender()
+        public GenreDto()
         {
         }
     }

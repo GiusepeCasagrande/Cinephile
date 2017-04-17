@@ -11,6 +11,8 @@ namespace Cinephile.Core.Rest.Dtos.Movies
         public bool Adult { get; set; }
         public string Overview { get; set; }
         public string ReleaseDate { get; set; }
+
+        [JsonProperty("genre_ids")]
         public IList<int> GenreIds { get; set; }
         public int Id { get; set; }
         public string OriginalTitle { get; set; }

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using Cinephile.Core.Models;
 using Cinephile.Core.Rest;
 using Cinephile.Core.Rest.Dtos.ImageConfigurations;
 using Splat;
@@ -35,22 +34,29 @@ namespace Cinephile.Core.Model
 
         IObservable<IEnumerable<Movie>> FetchUpcomingMovies()
         {
-            return
-                movieApiService
-                    .UserInitiated
-                    .FetchUpcomingMovies(apiKey)
-                    .Select(dto => dto.Results.Select(movieDto => new Movie()
+            return Observable
+                .CombineLatest(
+                    movieApiService
+                        .UserInitiated
+                        .FetchUpcomingMovies(apiKey),
+                    movieApiService
+                        .UserInitiated
+                        .FetchGenres(apiKey),
+                    (movies, genres) =>
                     {
-                        Title = movieDto.Title,
-                        PosterPath = string.Concat(BaseUrl,
-                                                    SmallPosterSize,
-                                                   movieDto.PosterPath)
-                    }));
+                        return movies
+                                .Results
+                                .Select(movieDto => new Movie()
+                                {
+                                    Title = movieDto.Title,
+                                    PosterPath = string
+                                        .Concat(BaseUrl,
+                                               SmallPosterSize,
+                                               movieDto.PosterPath),
+                                    Genres = genres.Genres.Where(g => movieDto.GenreIds.Contains(g.Id)).Select(j => j.Name).ToList()
+                                });
+                    });
         }
-
-        //IObservable<IEnumerable<Gender>> FetchGenders()
-        //{
-        //}
 
     }
 }

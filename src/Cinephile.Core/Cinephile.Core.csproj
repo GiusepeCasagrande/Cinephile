@@ -44,7 +44,8 @@
     <Compile Include="Rest\Dtos\Movies\MovieDates.cs" />
     <Compile Include="Rest\Dtos\ImageConfigurations\ImageConfigurationDto.cs" />
     <Compile Include="Rest\Dtos\ImageConfigurations\ImagesDto.cs" />
-    <Compile Include="Models\Gender.cs" />
+    <Compile Include="Rest\Dtos\Movies\GenresDto.cs" />
+    <Compile Include="Rest\Dtos\Movies\GenreDto.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

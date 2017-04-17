@@ -23,11 +23,11 @@ namespace Cinephile.ViewModels
             }
         }
 
-        public string Gender
+        public string Genres
         {
             get
             {
-                return string.Join(", ", this.movie.GenreIds);
+                return string.Join(", ", this.movie.Genres);
 			}
         }
 
