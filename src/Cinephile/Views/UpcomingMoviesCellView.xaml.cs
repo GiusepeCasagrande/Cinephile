@@ -21,6 +21,7 @@ namespace Cinephile.Views
                 this.OneWayBind(ViewModel, x => x.Title, x => x.Title.Text).DisposeWith(SubscriptionDisposables);
                 this.OneWayBind(ViewModel, x => x.PosterPath, x => x.Poster.Source, x => x).DisposeWith(SubscriptionDisposables);
                 this.OneWayBind(ViewModel, x => x.Genres, x => x.Genres.Text, x => x).DisposeWith(SubscriptionDisposables);
+                this.OneWayBind(ViewModel, x => x.ReleaseDate, x => x.ReleaseDate.Text, x => x).DisposeWith(SubscriptionDisposables);
             });
         }
 

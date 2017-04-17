@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Cinephile.Core.Rest;
 using Cinephile.Core.Rest.Dtos.ImageConfigurations;
+using Cinephile.Core.Rest.Dtos.Movies;
 using Splat;
 
 namespace Cinephile.Core.Model
@@ -46,17 +48,22 @@ namespace Cinephile.Core.Model
                     {
                         return movies
                                 .Results
-                                .Select(movieDto => new Movie()
-                                {
-                                    Title = movieDto.Title,
-                                    PosterPath = string
-                                        .Concat(BaseUrl,
-                                               SmallPosterSize,
-                                               movieDto.PosterPath),
-                                    Genres = genres.Genres.Where(g => movieDto.GenreIds.Contains(g.Id)).Select(j => j.Name).ToList()
-                                });
+                                .Select(movieDto => MapDtoToModel(genres, movieDto));
                     });
         }
 
+        Movie MapDtoToModel(GenresDto genres, MovieResult movieDto)
+        {
+            return new Movie()
+            {
+                Title = movieDto.Title,
+                PosterPath = string
+                                .Concat(BaseUrl,
+                                       SmallPosterSize,
+                                       movieDto.PosterPath),
+                Genres = genres.Genres.Where(g => movieDto.GenreIds.Contains(g.Id)).Select(j => j.Name).ToList(),
+                ReleaseDate = DateTime.Parse(movieDto.ReleaseDate, new CultureInfo("en-US"))
+            };
+        }
     }
 }

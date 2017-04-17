@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Cinephile.Core.Model;
 using ReactiveUI;
@@ -29,6 +29,14 @@ namespace Cinephile.ViewModels
             {
                 return string.Join(", ", this.movie.Genres);
 			}
+        }
+
+        public string ReleaseDate
+        {
+            get
+            {
+                return this.movie.ReleaseDate.ToString("D");
+            }
         }
 
         private Movie movie;

@@ -25,10 +25,14 @@ namespace Cinephile.ViewModels
             set { this.RaiseAndSetIfChanged(ref m_selectedItem, value); }
         }
 
-        public ReactiveCommand<Unit, IEnumerable<Movie>> LoadAllDocuments
+        public ReactiveCommand<Unit, IEnumerable<Movie>> LoadMovies
         {
         	get;
         }
+
+        ObservableAsPropertyHelper<bool> m_isRefreshing;
+        public bool IsRefreshing => m_isRefreshing.Value;
+
 
         private MovieService movieService;
         IScheduler mainThreadScheduler;
@@ -44,14 +48,15 @@ namespace Cinephile.ViewModels
             Movies = new ReactiveList<UpcomingMoviesCellViewModel>();
             movieService = new MovieService();
 
-            LoadAllDocuments = ReactiveCommand
+            LoadMovies = ReactiveCommand
                 .CreateFromObservable(
                     movieService.GetUpcomingMovies,
                     outputScheduler: this.mainThreadScheduler);
 
             this.WhenActivated((CompositeDisposable disposables) =>
             {
-                LoadAllDocuments
+                LoadMovies
+                    .Where(movies => movies != null)
                     .Select(movies => movies.Select(movie => new UpcomingMoviesCellViewModel(movie)))
                     .Subscribe(movieViewModel =>
                     {
@@ -66,12 +71,19 @@ namespace Cinephile.ViewModels
                     .Subscribe(x => LoadSelectedPage(x))
                     .DisposeWith(disposables);
 
-                LoadAllDocuments
+                LoadMovies
                     .ThrownExceptions
                     .Subscribe((obj) =>
-                {
-                    Debug.WriteLine(obj.Message);
-                });
+                    {
+                        Debug.WriteLine(obj.Message);
+                    });
+
+                 m_isRefreshing =
+                    LoadMovies
+                        .IsExecuting
+                        .Select(x => x)
+                        .ToProperty(this, x => x.IsRefreshing, true)
+                        .DisposeWith(disposables);
             });
         }
 

@@ -10,6 +10,8 @@ namespace Cinephile.Core.Rest.Dtos.Movies
         public string PosterPath { get; set; }
         public bool Adult { get; set; }
         public string Overview { get; set; }
+
+        [JsonProperty("release_date")]
         public string ReleaseDate { get; set; }
 
         [JsonProperty("genre_ids")]

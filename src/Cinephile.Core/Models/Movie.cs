@@ -8,7 +8,7 @@ namespace Cinephile.Core.Model
         public string PosterPath { get; set; }
         public bool Adult { get; set; }
         public string Overview { get; set; }
-        public string ReleaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; }
         public IList<string> Genres { get; set; }
         public int Id { get; set; }
         public string OriginalTitle { get; set; }
