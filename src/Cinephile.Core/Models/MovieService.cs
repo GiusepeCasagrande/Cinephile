@@ -14,6 +14,8 @@ namespace Cinephile.Core.Model
 {
     public class MovieService : IMovieService
     {
+        public const int PageSize = 20;
+
         const string BaseUrl = "http://image.tmdb.org/t/p/";
         const string SmallPosterSize = "w185";
 
@@ -27,20 +29,22 @@ namespace Cinephile.Core.Model
             movieCache = cache ?? Locator.Current.GetService<ICache>();
         }
 
-        public IObservable<IEnumerable<Movie>> GetUpcomingMovies()
+        public IObservable<IEnumerable<Movie>> GetUpcomingMovies(int index)
         {
             return
                 movieCache
-                    .GetAndFetchLatest("upcoming_movies", FetchUpcomingMovies);
+                    .GetAndFetchLatest($"upcoming_movies_{index}", () => FetchUpcomingMovies(index));
         }
 
-        IObservable<IEnumerable<Movie>> FetchUpcomingMovies()
+        IObservable<IEnumerable<Movie>> FetchUpcomingMovies(int index)
         {
+            int page = (int)Math.Ceiling(index / (double)PageSize) + 1;
+
             return Observable
                 .CombineLatest(
                     movieApiService
                         .UserInitiated
-                        .FetchUpcomingMovies(apiKey),
+                        .FetchUpcomingMovies(apiKey, page),
                     movieApiService
                         .UserInitiated
                         .FetchGenres(apiKey),

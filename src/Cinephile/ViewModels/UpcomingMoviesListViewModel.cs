@@ -25,7 +25,7 @@ namespace Cinephile.ViewModels
             set { this.RaiseAndSetIfChanged(ref m_selectedItem, value); }
         }
 
-        public ReactiveCommand<Unit, IEnumerable<Movie>> LoadMovies
+        public ReactiveCommand<int, IEnumerable<Movie>> LoadMovies
         {
         	get;
         }
@@ -49,8 +49,8 @@ namespace Cinephile.ViewModels
             movieService = new MovieService();
 
             LoadMovies = ReactiveCommand
-                .CreateFromObservable(
-                    movieService.GetUpcomingMovies,
+                .CreateFromObservable((int index) => 
+                    movieService.GetUpcomingMovies(index),
                     outputScheduler: this.mainThreadScheduler);
 
             this.WhenActivated((CompositeDisposable disposables) =>
@@ -60,11 +60,9 @@ namespace Cinephile.ViewModels
                 LoadMovies
                     .Where(movies => movies != null)
                     .Select(movies => movies.Select(movie => new UpcomingMoviesCellViewModel(movie)))
-                    .Subscribe(movieViewModel =>
-                    {
-                        Movies.Clear();
-                        Movies.AddRange(movieViewModel);
-                    })
+                    .SelectMany(movieCell => movieCell)
+                    .Where(movieCell => !Movies.Contains(movieCell))
+                    .Subscribe(movieViewModel => Movies.Add(movieViewModel))
                     .DisposeWith(disposables);
 
                 this

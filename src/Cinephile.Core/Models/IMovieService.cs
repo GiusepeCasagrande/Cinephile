@@ -5,6 +5,6 @@ namespace Cinephile.Core.Model
 {
     public interface IMovieService
     {
-        IObservable<IEnumerable<Movie>> GetUpcomingMovies();
+        IObservable<IEnumerable<Movie>> GetUpcomingMovies(int index);
     }
 }

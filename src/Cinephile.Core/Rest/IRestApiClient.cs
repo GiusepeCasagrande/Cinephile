@@ -9,7 +9,7 @@ namespace Cinephile.Core.Rest
     public interface IRestApiClient
     {
         [Get("/movie/upcoming?api_key={apiKey}&language={language}&page={page}")]
-        IObservable<MovieDto> FetchUpcomingMovies(string apiKey, string language = "en-US", int page = 1);
+        IObservable<MovieDto> FetchUpcomingMovies(string apiKey, int page, string language = "en-US");
 
         [Get("/configuration?api_key={apiKey}")]
         IObservable<ImageConfigurationDto> FetchImageConfiguration(string apiKey);
