@@ -10,6 +10,8 @@ namespace Cinephile.Core.Rest
     /// </summary>
     public sealed class Cache : ICache
     {
+        const double CacheValidityInMinutes = 5d;
+
         /// <summary>
         /// Initialize the specified name.
         /// </summary>
@@ -25,16 +27,15 @@ namespace Cinephile.Core.Rest
         /// <returns>The and fetch latest.</returns>
         /// <param name="cacheKey">Cache key.</param>
         /// <param name="fetchFunction">Fetch function.</param>
-        /// <param name="cacheValidityInMinutes">Cache validity in minutes.</param>
         /// <typeparam name="TResult">The 1st type parameter.</typeparam>
-        public IObservable<TResult> GetAndFetchLatest<TResult>(string cacheKey, Func<IObservable<TResult>> fetchFunction, double cacheValidityInMinutes = 5d)
+        public IObservable<TResult> GetAndFetchLatest<TResult>(string cacheKey, Func<IObservable<TResult>> fetchFunction)
         {
             return BlobCache
                 .LocalMachine
                 .GetAndFetchLatest(cacheKey, fetchFunction, offset =>
                 {
                     var elapsed = DateTimeOffset.Now - offset;
-                    return elapsed > TimeSpan.FromMinutes(cacheValidityInMinutes);
+                    return elapsed > TimeSpan.FromMinutes(CacheValidityInMinutes);
                 });
         }
 

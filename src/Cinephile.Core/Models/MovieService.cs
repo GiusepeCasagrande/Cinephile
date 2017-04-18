@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Cinephile.Core.Rest;
-using Cinephile.Core.Rest.Dtos.ImageConfigurations;
 using Cinephile.Core.Rest.Dtos.Movies;
 using Splat;
 
@@ -15,6 +12,7 @@ namespace Cinephile.Core.Model
     public class MovieService : IMovieService
     {
         public const int PageSize = 20;
+        const string Language = "en-US";
 
         const string BaseUrl = "http://image.tmdb.org/t/p/";
         const string SmallPosterSize = "w185";
@@ -46,10 +44,10 @@ namespace Cinephile.Core.Model
                 .CombineLatest(
                     movieApiService
                         .UserInitiated
-                        .FetchUpcomingMovies(apiKey, page),
+                        .FetchUpcomingMovies(apiKey, page, Language),
                     movieApiService
                         .UserInitiated
-                        .FetchGenres(apiKey),
+                        .FetchGenres(apiKey, Language),
                     (movies, genres) =>
                     {
                         return movies
@@ -73,7 +71,7 @@ namespace Cinephile.Core.Model
 									   BigPosterSize,
 		                               movieDto.PosterPath),
                 Genres = genres.Genres.Where(g => movieDto.GenreIds.Contains(g.Id)).Select(j => j.Name).ToList(),
-                ReleaseDate = DateTime.Parse(movieDto.ReleaseDate, new CultureInfo("en-US")),
+                ReleaseDate = DateTime.Parse(movieDto.ReleaseDate, new CultureInfo(Language)),
                 Overview = movieDto.Overview
             };
         }
