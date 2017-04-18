@@ -15,9 +15,13 @@
                                         AutomationId="DocumentView_Thumbnail"
                                         BitmapOptimizations="true"
                                         DownsampleUseDipUnits="true" />
-            <Label x:Name="Genres" HorizontalTextAlignment="End" />
-            <Label x:Name="ReleaseDate" />
-            <Label x:Name="Overview" />
+            <StackLayout Margin="10">
+                <Label x:Name="Genres"
+                       FontSize="12"
+                       HorizontalTextAlignment="End" />
+                <Label x:Name="ReleaseDate" FontSize="14" />
+                <Label x:Name="Overview" FontSize="10" />
+            </StackLayout>
         </StackLayout>
     </ScrollView>
 </ui:ContentPageBase>
