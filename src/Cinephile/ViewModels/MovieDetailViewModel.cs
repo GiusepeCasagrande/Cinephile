@@ -14,11 +14,19 @@ namespace Cinephile.ViewModels
             }
         }
 
-        public string PosterPath
+        public string PosterSmall
         {
             get
             {
-                return this.movie.PosterPath;
+                return this.movie.PosterSmall;
+            }
+        }
+
+        public string PosterBig
+        {
+            get
+            {
+                return this.movie.PosterBig;
             }
         }
 
@@ -51,6 +59,7 @@ namespace Cinephile.ViewModels
         public MovieDetailViewModel(Movie movie, IScreen hostScreen = null) : base(hostScreen)
         {
             this.movie = movie;
+            UrlPathSegment = this.Title;
         }
     }
 }

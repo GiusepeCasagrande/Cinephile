@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -18,6 +18,8 @@ namespace Cinephile.Core.Model
 
         const string BaseUrl = "http://image.tmdb.org/t/p/";
         const string SmallPosterSize = "w185";
+        const string BigPosterSize = "w500";
+
 
         private const string apiKey = "1f54bd990f1cdfb230adb312546d765d";
         private IApiService movieApiService;
@@ -60,11 +62,16 @@ namespace Cinephile.Core.Model
         {
             return new Movie()
             {
+                Id = movieDto.Id,
                 Title = movieDto.Title,
-                PosterPath = string
+                PosterSmall = string
                                 .Concat(BaseUrl,
                                        SmallPosterSize,
                                        movieDto.PosterPath),
+                PosterBig = string
+                                .Concat(BaseUrl,
+									   BigPosterSize,
+		                               movieDto.PosterPath),
                 Genres = genres.Genres.Where(g => movieDto.GenreIds.Contains(g.Id)).Select(j => j.Name).ToList(),
                 ReleaseDate = DateTime.Parse(movieDto.ReleaseDate, new CultureInfo("en-US")),
                 Overview = movieDto.Overview

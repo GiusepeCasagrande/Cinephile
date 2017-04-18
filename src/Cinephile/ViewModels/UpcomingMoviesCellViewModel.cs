@@ -27,7 +27,7 @@ namespace Cinephile.ViewModels
         {
             get
             {
-                return this.movie.PosterPath;
+                return this.movie.PosterSmall;
             }
         }
 

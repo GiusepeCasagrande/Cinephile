@@ -15,7 +15,6 @@
                                         AutomationId="DocumentView_Thumbnail"
                                         BitmapOptimizations="true"
                                         DownsampleUseDipUnits="true" />
-            <Label x:Name="Title" />
             <Label x:Name="Genres" HorizontalTextAlignment="End" />
             <Label x:Name="ReleaseDate" />
             <Label x:Name="Overview" />

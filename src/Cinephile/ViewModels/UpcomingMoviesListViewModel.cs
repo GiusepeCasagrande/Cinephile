@@ -61,7 +61,7 @@ namespace Cinephile.ViewModels
                     .Where(movies => movies != null)
                     .Select(movies => movies.Select(movie => new UpcomingMoviesCellViewModel(movie)))
                     .SelectMany(movieCell => movieCell)
-                    .Where(movieCell => !Movies.Contains(movieCell))
+                    .Where(movieCell => !Movies.Select(m => m.Title).Contains(movieCell.Title))
                     .Subscribe(movieViewModel => Movies.Add(movieViewModel))
                     .DisposeWith(disposables);
 

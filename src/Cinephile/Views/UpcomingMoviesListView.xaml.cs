@@ -1,4 +1,5 @@
-﻿using System.Reactive;
+﻿using System.Diagnostics;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Cinephile.Core.Model;
@@ -27,7 +28,6 @@ namespace Cinephile.Views
                 )
                 .DisposeWith(disposables);
 
-                //this.OneWayBind(ViewModel, x => x.IsRefreshing, x => x.UpcomingMoviesList.IsRefreshing).DisposeWith(disposables);
                 this.Bind(ViewModel, x => x.SelectedItem, x => x.UpcomingMoviesList.SelectedItem).DisposeWith(disposables);
 
                 Observable
@@ -37,11 +37,10 @@ namespace Cinephile.Views
                         var cell = e.EventArgs.Item as UpcomingMoviesCellViewModel;
                         return ViewModel.Movies.IndexOf(cell);
                     })
-                    .Where(index => index % MovieService.PageSize == 8)
+                    .Do(index => Debug.WriteLine($"==> index {index} >= {ViewModel.Movies.Count - 5} = {index >= ViewModel.Movies.Count - 5}"))
+                    .Where(index => index >= ViewModel.Movies.Count - 5)
                     .InvokeCommand(ViewModel.LoadMovies)
                     .DisposeWith(disposables);
-
-            //this.BindCommand(ViewModel, x => x.LoadMovies, x => x.UpcomingMoviesList, nameof(UpcomingMoviesList.ItemAppearing)).DisposeWith(disposables);
 
             Observable.Return(0).InvokeCommand(ViewModel.LoadMovies);
         });
