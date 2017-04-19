@@ -96,10 +96,12 @@ namespace Cinephile.UnitTests.Model
 
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual.Count(), Is.EqualTo(20));
-            Assert.That(actual.Select(m => m.Id), Has.All.Not.Empty);
-            Assert.That(actual.Select(m => m.Overview), Has.All.Not.Empty);
-            Assert.That(actual.Select(m => m.PosterBig), Has.All.Not.Empty);
-            Assert.That(actual.Select(m => m.PosterSmall), Has.All.Not.Empty);
+            Assert.That(actual.Select(m => m.Overview.Length), Has.All.GreaterThan(0));
+            Assert.That(actual.Select(m => m.PosterBig.Length), Has.All.GreaterThan(0));
+            Assert.That(actual.Select(m => m.PosterSmall.Length), Has.All.GreaterThan(0));
+
+            Assert.AreEqual("Genre1", actual.First().Genres[0]);
+            Assert.AreEqual("Genre2", actual.First().Genres[1]);
         }
     }
 }
