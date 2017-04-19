@@ -1,5 +1,8 @@
 # Cinephile
-An App that list the upcoming movies based on https://www.themoviedb.org
+An App that list the upcoming movies based on [The Movie DB](https://www.themoviedb.org)
+
+![](screenshots/image01.jpg)
+![](screenshots/image02.jpg)
 
 Third-party libraries used:
 
@@ -9,7 +12,7 @@ Third-party libraries used:
 
 - Reactive Extensios: Set of extensios and classes to alow reactive funcional programming.
 
-- Splat: Service Locator. The best reason why using a Service Locator instead of a IoC can be found in Paul Bets answer here: http://stackoverflow.com/questions/26898381/reactiveui-view-viewmodel-injection-and-di-in-general
+- Splat: Service Locator. The best reason why using a Service Locator instead of a IoC can be found in Paul Bets answer [here](http://stackoverflow.com/questions/26898381/reactiveui-view-viewmodel-injection-and-di-in-general)
 
 - FFImageLoading: This library helps to reduce the memory usage of images downsampling them as needed, caching and using just one bitmap in memory when the same image is displayed multiple times.
 
