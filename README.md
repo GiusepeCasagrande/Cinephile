@@ -2,7 +2,10 @@
 An App that list the upcoming movies based on https://www.themoviedb.org
 
 Third-party libraries used:
-ReactiveUI: MVVM framework based on RFP.
+
+- ReactiveUI: MVVM framework based on RFP.
+
+- Xamarin.Froms: I decide to go with forms because it was the faster and simpler aproach here, I could invest much more time in the UI and improve it, but this wasn't my main concern here.
 
 - Reactive Extensios: Set of extensios and classes to alow reactive funcional programming.
 
