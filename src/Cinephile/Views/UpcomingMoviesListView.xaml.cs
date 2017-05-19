@@ -45,5 +45,5 @@ namespace Cinephile.Views
             Observable.Return(0).InvokeCommand(ViewModel.LoadMovies);
         });
         }
-}
+    }
 }
