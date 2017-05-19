@@ -28,19 +28,10 @@ namespace Cinephile.Views
                 UpcomingMoviesList
                     .Events()
                     .ItemAppearing
-                    .Select((e) =>
-                    { 
-                        var cell = e.Item as UpcomingMoviesCellViewModel;
-                        return ViewModel.Movies.IndexOf(cell);
-                    })
-                    .Do(index => Debug.WriteLine($"==> index {index} >= {ViewModel.Movies.Count - 5} = {index >= ViewModel.Movies.Count - 5}"))
-                    .Where(index => index >= ViewModel.Movies.Count - 5)
-                    .InvokeCommand(ViewModel.LoadMovies)
+                    .Select((e) => e.Item as UpcomingMoviesCellViewModel)
+                    .BindTo(this, x => x.ViewModel.ItemAppearing)
                     .DisposeWith(disposables);
 
-                Observable
-                    .Return(0)
-                    .InvokeCommand(ViewModel.LoadMovies);
             });
         }
     }
