@@ -6,6 +6,7 @@ using Cinephile.Core.Model;
 using Cinephile.Utils;
 using Cinephile.ViewModels;
 using ReactiveUI;
+using Xamarin.Forms;
 
 namespace Cinephile.Views
 {
@@ -30,11 +31,12 @@ namespace Cinephile.Views
 
                 this.Bind(ViewModel, x => x.SelectedItem, x => x.UpcomingMoviesList.SelectedItem).DisposeWith(disposables);
 
-                Observable
-                    .FromEventPattern<Xamarin.Forms.ItemVisibilityEventArgs>(x => UpcomingMoviesList.ItemAppearing += x, x => UpcomingMoviesList.ItemAppearing -= x)
+                UpcomingMoviesList
+                    .Events()
+                    .ItemAppearing
                     .Select((e) =>
                     {
-                        var cell = e.EventArgs.Item as UpcomingMoviesCellViewModel;
+                        var cell = e.Item as UpcomingMoviesCellViewModel;
                         return ViewModel.Movies.IndexOf(cell);
                     })
                     .Do(index => Debug.WriteLine($"==> index {index} >= {ViewModel.Movies.Count - 5} = {index >= ViewModel.Movies.Count - 5}"))
@@ -42,8 +44,8 @@ namespace Cinephile.Views
                     .InvokeCommand(ViewModel.LoadMovies)
                     .DisposeWith(disposables);
 
-            Observable.Return(0).InvokeCommand(ViewModel.LoadMovies);
-        });
+                Observable.Return(0).InvokeCommand(ViewModel.LoadMovies);
+            });
         }
     }
 }
