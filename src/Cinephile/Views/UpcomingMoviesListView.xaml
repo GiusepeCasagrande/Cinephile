@@ -9,7 +9,8 @@
 
     <ListView x:Name="UpcomingMoviesList"
               RowHeight="100"
-              SeparatorVisibility="None">
+              SeparatorVisibility="None"
+              CachingStrategy="RecycleElement">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ui:UpcomingMoviesCellView ViewModel="{Binding .}" />
