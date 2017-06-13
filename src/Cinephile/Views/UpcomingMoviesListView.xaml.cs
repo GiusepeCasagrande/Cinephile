@@ -2,10 +2,10 @@
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using Cinephile.Core.Model;
-using Cinephile.Utils;
+using Cinephile.Core.Model; 
 using Cinephile.ViewModels;
 using ReactiveUI;
+using Xamarin.Forms;
 
 namespace Cinephile.Views
 {
@@ -17,33 +17,22 @@ namespace Cinephile.Views
 
             this.WhenActivated(disposables =>
             {
-
                 ViewModel.SelectedItem = null;
 
-                this.OneWayBind(ViewModel, x => x.Movies, x => x.UpcomingMoviesList.ItemsSource,
-                    x =>
-                    {
-                        return new ObservableReactiveList<UpcomingMoviesCellViewModel>(x);
-                    }
-                )
-                .DisposeWith(disposables);
-
-                this.Bind(ViewModel, x => x.SelectedItem, x => x.UpcomingMoviesList.SelectedItem).DisposeWith(disposables);
-
-                Observable
-                    .FromEventPattern<Xamarin.Forms.ItemVisibilityEventArgs>(x => UpcomingMoviesList.ItemAppearing += x, x => UpcomingMoviesList.ItemAppearing -= x)
-                    .Select((e) =>
-                    {
-                        var cell = e.EventArgs.Item as UpcomingMoviesCellViewModel;
-                        return ViewModel.Movies.IndexOf(cell);
-                    })
-                    .Do(index => Debug.WriteLine($"==> index {index} >= {ViewModel.Movies.Count - 5} = {index >= ViewModel.Movies.Count - 5}"))
-                    .Where(index => index >= ViewModel.Movies.Count - 5)
-                    .InvokeCommand(ViewModel.LoadMovies)
+                this.OneWayBind(ViewModel, x => x.Movies, x => x.UpcomingMoviesList.ItemsSource)
                     .DisposeWith(disposables);
 
-            Observable.Return(0).InvokeCommand(ViewModel.LoadMovies);
-        });
+                this.Bind(ViewModel, x => x.SelectedItem, x => x.UpcomingMoviesList.SelectedItem)
+                    .DisposeWith(disposables);
+
+                UpcomingMoviesList
+                    .Events()
+                    .ItemAppearing
+                    .Select((e) => e.Item as UpcomingMoviesCellViewModel)
+                    .BindTo(this, x => x.ViewModel.ItemAppearing)
+                    .DisposeWith(disposables);
+
+            });
         }
-}
+    }
 }

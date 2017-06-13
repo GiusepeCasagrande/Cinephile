@@ -8,21 +8,27 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Cinephile.Core.Model;
 using ReactiveUI;
+using System.Collections.ObjectModel;
 
 namespace Cinephile.ViewModels
 {
     public class UpcomingMoviesListViewModel : ViewModelBase
     {
-        public ReactiveList<UpcomingMoviesCellViewModel> Movies
-        {
-            get;
-        }
+        public ObservableCollection<UpcomingMoviesCellViewModel> Movies { get; } = 
+            new ObservableCollection<UpcomingMoviesCellViewModel>();
 
         UpcomingMoviesCellViewModel m_selectedItem;
         public UpcomingMoviesCellViewModel SelectedItem
         {
             get { return m_selectedItem; }
             set { this.RaiseAndSetIfChanged(ref m_selectedItem, value); }
+        }
+
+        UpcomingMoviesCellViewModel m_itemAppearing;
+        public UpcomingMoviesCellViewModel ItemAppearing
+        {
+            get { return m_itemAppearing; }
+            set { this.RaiseAndSetIfChanged(ref m_itemAppearing, value); }
         }
 
         public ReactiveCommand<int, IEnumerable<Movie>> LoadMovies
@@ -45,7 +51,6 @@ namespace Cinephile.ViewModels
 
             UrlPathSegment = "Upcoming Movies";
 
-            Movies = new ReactiveList<UpcomingMoviesCellViewModel>();
             movieService = new MovieService();
 
             LoadMovies = ReactiveCommand
@@ -62,6 +67,7 @@ namespace Cinephile.ViewModels
                     .Select(movies => movies.Select(movie => new UpcomingMoviesCellViewModel(movie)))
                     .SelectMany(movieCell => movieCell)
                     .Where(movieCell => !Movies.Select(m => m.Title).Contains(movieCell.Title))
+                    .Do(_ => Debug.WriteLine($"Adding Movie Items"))
                     .Subscribe(movieViewModel => Movies.Add(movieViewModel))
                     .DisposeWith(disposables);
 
@@ -84,6 +90,21 @@ namespace Cinephile.ViewModels
                         .Select(x => x)
                         .ToProperty(this, x => x.IsRefreshing, true)
                         .DisposeWith(disposables);
+
+
+                this.WhenAnyValue(x=> x.ItemAppearing)
+                    .Select(item =>
+                    {
+                        if (item == null)
+                            return -1; //causes initial load
+
+                        return Movies.IndexOf(item);
+                    })
+                    .Do(index => Debug.WriteLine($"==> index {index} >= {Movies.Count - 5} = {index >= Movies.Count - 5}"))
+                    .Where(index => index >= Movies.Count - 5)
+                    .InvokeCommand(LoadMovies)
+                    .DisposeWith(disposables);
+
             });
         }
 
